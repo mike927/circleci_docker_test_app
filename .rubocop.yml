@@ -1,0 +1,21 @@
+Rails:
+    Enabled: true
+AllCops:
+  TargetRubyVersion: 2.4.1
+
+  Exclude:
+    - 'config/environments/**'
+    - 'config/locales/**'
+    - 'Gemfile'
+    - 'bin/**/*'
+    - 'Rakefile'
+    - 'db/**/*'
+
+FrozenStringLiteralComment:
+  Enabled: false
+Documentation:
+  Enabled: false
+LineLength:
+  Max: 120
+HttpPositionalArguments:
+  Enabled: false
