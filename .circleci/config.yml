@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    docker:
+       - image: mike927/circleci_docker_test:latest
+    steps:
+      - run:
+          name: Installing dependencies
+          command: |
+            bundle install
+      - run:
+        name: Testing database migrations
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:schema:load
+      - run:
+          name: Running tests
+          command: |
+            bundle exec rspec
