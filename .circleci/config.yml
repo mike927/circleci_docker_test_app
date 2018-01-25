@@ -1,20 +1,52 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/circleci_docker_test_app
     docker:
-       - image: mike927/circleci_docker_test:latest
+      - image: circleci/ruby:2.4.1-node
+        environment:
+        - RAILS_ENV: build
+        - PGHOST: 127.0.0.1
+        - PGUSER: root
+
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+        - POSTGRES_USER: circleci_docker_user
+        - POSTGRES_PASSWORD: circleci_docker_user
+        - POSTGRES_DB: circleci_docker_build
+
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - gem-cache-{{ arch }}-{{ .Branch }}
+            - gem-cache
       - run:
-          name: Installing dependencies
-          command: |
-            bundle install
+          name: Install dependencies
+          command: bundle install --path vendor/bundle
+
+      - save_cache:
+          key: gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
       - run:
-          name: Testing database migrations
+          name: Drop Database
           command: |
-            bundle exec rake db:create
-            bundle exec rake db:schema:load
+            bundle exec rake db:drop
+
       - run:
-          name: Running tests
+          name: Create Database and run migrations
           command: |
-            bundle exec rspec
+           bundle exec rake db:create db:schema:load
+
+      - run:
+          name: Run specs
+          command: |
+            bundle exec rspec --fail-fast
+
+      - run:
+          name: Run rubocop
+          command: |
+            bundle exec rubocop

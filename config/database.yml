@@ -8,6 +8,7 @@ default: &default
 development:
   <<: *default
   database: circleci_docker_development
+
 test:
   <<: *default
   database: circleci_docker_test
@@ -15,3 +16,7 @@ test:
 production:
   <<: *default
   database: circleci_docker_production
+
+build:
+  <<: *default
+  database: circleci_docker_build

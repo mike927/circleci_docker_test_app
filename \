@@ -1,0 +1,15 @@
+Add docker-compose file
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Thu Jan 25 08:46:47 2018 +0100
+#
+# On branch master
+# Changes to be committed:
+#	modified:   .circleci/config.yml
+#	modified:   Dockerfile
+#	modified:   config/database.yml
+#	new file:   config/environments/build.rb
+#	new file:   docker-compose.yml
+#
